@@ -56,19 +56,19 @@ class Range {
     this.inputStart.setAttribute("placeholder","Start")
     this.inputEnd.setAttribute("placeholder","End")
 
-    this.inputStart.addEventListener("keyup", ev => {
+    this.inputStart.addEventListener("keyup", () => {
       this.update(this.inputStart.valueAsNumber, null)
       this.eventTarget.dispatchEvent(this.event)
     })
-    this.inputStart.addEventListener("change", ev => {
+    this.inputStart.addEventListener("change", () => {
       this.update(this.inputStart.valueAsNumber, null)
       this.eventTarget.dispatchEvent(this.event)
     })
-    this.inputEnd.addEventListener("keyup", ev => {
+    this.inputEnd.addEventListener("keyup", () => {
       this.update(null, this.inputEnd.valueAsNumber)
       this.eventTarget.dispatchEvent(this.event)
     })
-    this.inputEnd.addEventListener("change", ev => {
+    this.inputEnd.addEventListener("change", () => {
       this.update(null, this.inputEnd.valueAsNumber)
       this.eventTarget.dispatchEvent(this.event)
     })
@@ -77,7 +77,7 @@ class Range {
 
     if (this.inputColor) {
       this.inputColor.setAttribute("type","color")
-      this.inputColor.addEventListener("change", ev => {
+      this.inputColor.addEventListener("change", () => {
         this.color = this.inputColor?.value
         this.eventTarget.dispatchEvent(this.event)
       })
@@ -87,7 +87,7 @@ class Range {
     if (this.inputLabel) {
       this.inputLabel.setAttribute("type","text")
       this.inputLabel.setAttribute("placeholder","label")
-      this.inputLabel.addEventListener("change", ev => {
+      this.inputLabel.addEventListener("change", () => {
         this.label = this.inputLabel?.value
         console.log(this.label)
         this.eventTarget.dispatchEvent(this.event)
@@ -140,7 +140,7 @@ class Scale extends Range {
   private tickMarkerInput: HTMLInputElement;
 
   constructor(start:number, end:number, parent: HTMLDivElement) {
-    super(start, end, parent, false)
+    super(start, end, parent)
     this.event = resizeEvent
     this.eventTarget = resizeTarget
     
@@ -153,11 +153,11 @@ class Scale extends Range {
     this.tickMarkerInput.value = this.generateTickMarkers("amount",11).toString();
     this.tickMarkers = this.generateTickMarkers("amount",11);
 
-    this.tickMarkerInput.addEventListener("keyup", ev => {
+    this.tickMarkerInput.addEventListener("keyup", () => {
       this.tickMarkers = this.tickMarkerInput.value.split(',').map(v=>Number(v))
       redrawTarget.dispatchEvent(redrawEvent)
     })
-    this.tickMarkerInput.addEventListener("change", ev => {
+    this.tickMarkerInput.addEventListener("change", () => {
       this.tickMarkers = this.tickMarkerInput.value.split(',').map(v=>Number(v))
       redrawTarget.dispatchEvent(redrawEvent)
     })
@@ -178,7 +178,7 @@ class Scale extends Range {
   }
   public generateTickMarkers(mode:'amount'|'interval', amount?:number, interval?:number, startDelta?:number) {
     if (mode == "amount" && amount) {
-      return (Array<number>(amount)).fill(0).map((v,i) => {
+      return (Array<number>(amount)).fill(0).map((_v,i) => {
         return Math.round(((i*this.delta()/(amount - 1))+this.start + Number.EPSILON) * 100) / 100
       })
     } else if (mode == "interval" && interval) {

@@ -1,18 +1,17 @@
 import './style.css'
 import { Range, Scale, redrawTarget, resizeTarget } from "./classes"
 
-const canvas = document.querySelector("canvas")
-if (!canvas) throw 'Invalid Canvas'
-const ctx = canvas?.getContext('2d')
-if (!ctx) throw 'Invalid Canvas'
+const canvas = (document.querySelector("canvas") as HTMLCanvasElement)
+const ctx = (canvas.getContext('2d') as CanvasRenderingContext2D)
+if (ctx === null) throw 'Invalid Canvas'
 ctx?.save()
 
-const minMaxButton: HTMLDivElement|null = document.querySelector('#min-max-config');
-minMaxButton?.addEventListener('click', ev => {
+const minMaxButton: HTMLDivElement | null = document.querySelector('#min-max-config');
+minMaxButton?.addEventListener('click', _ev => {
   const configBox = document.querySelector('#config-box')
   configBox?.childNodes.forEach(e => {
-    if (e.nodeName == "DIV" && e.id != "min-max-config") {
-      if (minMaxButton.firstElementChild.textContent == "-") {
+    if (e.nodeName == "DIV" && (e as HTMLDivElement).id != "min-max-config") {
+      if ((minMaxButton.firstElementChild as Element).textContent == "-") {
         (e as HTMLDivElement).classList.add("hide")
       } else {
         (e as HTMLDivElement).classList.remove("hide")
@@ -21,17 +20,17 @@ minMaxButton?.addEventListener('click', ev => {
   })
   minMaxButton.firstElementChild?.innerHTML == '-'
   ? minMaxButton.firstElementChild.innerHTML = '+'
-  : minMaxButton.firstElementChild.innerHTML = '-'
+  : (minMaxButton.firstElementChild as Element).innerHTML = '-'
 
 })
 
 const addRangeButton: HTMLDivElement|null = document.querySelector("#add-range")
-const rangeContainer = document.querySelector('#range-input-container')
+const rangeContainer: HTMLDivElement = (document.querySelector('#range-input-container') as HTMLDivElement)
 
 const ranges: Range[] = getRanges()
 
 const scaleRangeDivX = document.querySelector('#scale')
-let scale = Scale.fromValues(scaleRangeDivX) || new Scale(-1,1,scaleRangeDivX)
+let scale = Scale.fromValues((scaleRangeDivX as HTMLDivElement)) || new Scale(-1,1,(scaleRangeDivX as HTMLDivElement))
 
 
 function resize() {
@@ -139,11 +138,8 @@ function storeRanges(): void {
 }
 
 function getRanges(): Range[] {
-  try {
-    return (JSON.parse(window.localStorage.getItem("ranges"))).map(v => new Range(v.start,v.end,rangeContainer,v.label,v.color))
-  } catch {
-    return []
-  }
+  if (window.localStorage.getItem("ranges")) return (JSON.parse((window.localStorage.getItem("ranges") as string)) as {start:number,end:number,color:string,label:string}[]).map(v => new Range(v.start,v.end,rangeContainer,v.label,v.color))
+  return []
 }
 
 
