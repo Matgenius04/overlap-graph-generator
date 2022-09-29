@@ -21,7 +21,7 @@ minMaxButton?.addEventListener('click', _ev => {
   minMaxButton.firstElementChild?.innerHTML == '-'
   ? minMaxButton.firstElementChild.innerHTML = '+'
   : (minMaxButton.firstElementChild as Element).innerHTML = '-'
-
+  
 })
 
 const addRangeButton: HTMLDivElement|null = document.querySelector("#add-range")
@@ -76,12 +76,13 @@ function update() {
     ctx?.translate(0,50)
     // draw range
     ctx.fillStyle = range.color || 'black'
-    ctx?.fill(range.draw(canvas, 5, 15))
+    ctx?.fill(range.draw(canvas, 5, 15, scale))
     ctx?.beginPath()
 
     // draw line coming down from range
     ctx.strokeStyle = range.color || 'black'
-    ctx.lineWidth = 5/(2*canvas.width)
+    ctx.lineWidth = 5*scale.delta()/canvas.width
+    ctx.setLineDash([0.2, 0.3])
     ctx?.moveTo(range.start+(range.delta()/2),0)
     ctx?.lineTo(range.start+(range.delta()/2),-i)
     ctx?.closePath()
@@ -138,14 +139,15 @@ function storeRanges(): void {
 }
 
 function getRanges(): Range[] {
-  if (window.localStorage.getItem("ranges")) return (JSON.parse((window.localStorage.getItem("ranges") as string)) as {start:number,end:number,color:string,label:string}[]).map(v => new Range(v.start,v.end,rangeContainer,v.label,v.color))
+  if (window.localStorage.getItem("ranges")) return (JSON.parse((window.localStorage.getItem("ranges") as string)) as {start:number,end:number,color:string,label:string}[]).map(v => (v.start!==null || v.end !== null) ? new Range(v.start,v.end,rangeContainer,v.label,v.color) : null).filter(v => v!==null) as Range[]
+  console.log('HI?!')
   return []
 }
 
 
 addRangeButton?.addEventListener("click", addNewRange)
 resize();
-document.addEventListener('resize', resize)
+window.addEventListener('resize', resize)
 
 redrawTarget.addEventListener("update", update)
 resizeTarget.addEventListener("update", resize)

@@ -21,7 +21,7 @@ class Range {
   
   constructor(start:number, end:number, parent: HTMLDivElement, label?: string, color?: string) {
       if (start >= end) {
-        throw "Start has to be larger than the end"
+        throw "Start has to be smaller than the end"
       }
       this.start = start;
       this.end = end;
@@ -108,7 +108,7 @@ class Range {
   public delta(): number {
     return this.end - this.start
   }
-  public draw(canvas: HTMLCanvasElement, lineWidth=5, tickHeight=10): Path2D {
+  public draw(canvas: HTMLCanvasElement, lineWidth=5, tickHeight=10, scale: Scale): Path2D {
     const path = new Path2D()
     // line
     path.rect(
@@ -119,16 +119,16 @@ class Range {
     )
     // start tick
     path.rect(
-      this.start - lineWidth/(2*canvas.width),
+      this.start - lineWidth*scale.delta()/(2*canvas.width),
       -tickHeight/2,
-      lineWidth/canvas.width,
+      lineWidth*scale.delta()/canvas.width,
       tickHeight
     )
     // // end tick
     path.rect(
-      this.end - lineWidth/(2*canvas.width),
+      this.end - lineWidth*scale.delta()/(2*canvas.width),
       -tickHeight/2,
-      lineWidth/canvas.width,
+      lineWidth*scale.delta()/canvas.width,
       tickHeight
     )
     return path;
@@ -168,9 +168,9 @@ class Scale extends Range {
     path.rect(this.start,-lineWidth/2,this.delta(),lineWidth)
     for (let marker of this.tickMarkers) {
       path.rect(
-        marker - lineWidth/(2*canvas.width),
+        marker - (lineWidth*this.delta()/(2*canvas.width)),
         -tickHeight/2,
-        lineWidth/canvas.width,
+        lineWidth*this.delta()/canvas.width,
         tickHeight
       )
     }
@@ -216,6 +216,8 @@ class Scale extends Range {
     let raw = window.localStorage.getItem("scale")
     if (!raw) return;
     let parsed = JSON.parse(raw);
+    console.log(parsed);
+    if (!parsed || !parsed.start || !parsed.end) return;
     const scale = new Scale(parsed.start,parsed.end, parent)
     scale.tickMarkers = parsed.tickMarkers;
     return scale;
