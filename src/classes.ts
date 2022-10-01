@@ -224,4 +224,5 @@ class Scale extends Range {
   }
 }
 
+
 export {Range, Scale, redrawTarget, resizeTarget}

@@ -1,14 +1,19 @@
 import './style.css'
 import { Range, Scale, redrawTarget, resizeTarget } from "./classes"
+import { DraggableBox } from './draggable'
 
 const canvas = (document.querySelector("canvas") as HTMLCanvasElement)
 const ctx = (canvas.getContext('2d') as CanvasRenderingContext2D)
 if (ctx === null) throw 'Invalid Canvas'
 ctx?.save()
 
+const configBox: HTMLDivElement | null = document.querySelector('#config-box')
+const draggableBox = new DraggableBox(configBox)
+
+draggableBox
+
 const minMaxButton: HTMLDivElement | null = document.querySelector('#min-max-config');
 minMaxButton?.addEventListener('click', _ev => {
-  const configBox = document.querySelector('#config-box')
   configBox?.childNodes.forEach(e => {
     if (e.nodeName == "DIV" && (e as HTMLDivElement).id != "min-max-config") {
       if ((minMaxButton.firstElementChild as Element).textContent == "-") {
@@ -45,6 +50,8 @@ function resize() {
   update()
 }
 
+
+// refactor to remove from main
 function update() {
   ctx?.save()
   ctx?.clearRect(scale.start, -canvas.height / 2, scale.delta(), canvas.height)
