@@ -20,7 +20,7 @@ class Range {
   // private mode: 'Symmetric' | 'StartEnd';
   
   constructor(start:number, end:number, parent: HTMLDivElement, label?: string, color?: string) {
-      if (start >= end) {
+      if (start == null || end == null || start >= end) {
         throw "Start has to be smaller than the end"
       }
       this.start = start;
