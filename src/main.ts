@@ -1,6 +1,7 @@
 import './style.css'
 import { Range, Scale, redrawTarget, resizeTarget } from "./classes"
 import { DraggableBox } from './draggable'
+import { TickMarkGeneratorBox } from './tickMarkBox'
 
 const canvas = (document.querySelector("canvas") as HTMLCanvasElement)
 const ctx = (canvas.getContext('2d') as CanvasRenderingContext2D)
@@ -8,9 +9,11 @@ if (ctx === null) throw 'Invalid Canvas'
 ctx?.save()
 
 const configBox: HTMLDivElement | null = document.querySelector('#config-box')
-const draggableBox = new DraggableBox(configBox)
+const tickMarkBox: HTMLDivElement | null = document.querySelector('#tickmark-generator-box')
+new DraggableBox(configBox)
+new DraggableBox(tickMarkBox)
 
-draggableBox
+
 
 const minMaxButton: HTMLDivElement | null = document.querySelector('#min-max-config');
 minMaxButton?.addEventListener('click', _ev => {
@@ -24,9 +27,9 @@ minMaxButton?.addEventListener('click', _ev => {
     }
   })
   minMaxButton.firstElementChild?.innerHTML == '-'
-    ? minMaxButton.firstElementChild.innerHTML = '+'
-    : (minMaxButton.firstElementChild as Element).innerHTML = '-'
-
+  ? minMaxButton.firstElementChild.innerHTML = '+'
+  : (minMaxButton.firstElementChild as Element).innerHTML = '-'
+  
 })
 
 const addRangeButton: HTMLDivElement | null = document.querySelector("#add-range")
@@ -37,11 +40,12 @@ const ranges: Range[] = getRanges()
 const scaleRangeDivX = document.querySelector('#scale')
 let scale = Scale.fromValues((scaleRangeDivX as HTMLDivElement)) || new Scale(-1, 1, (scaleRangeDivX as HTMLDivElement))
 
+new TickMarkGeneratorBox(scale)
 
 function resize() {
   canvas.width = canvas?.clientWidth
   canvas.height = canvas?.clientHeight
-
+  
   ctx?.restore()
   ctx?.translate(0, canvas.height / 2)
   ctx?.scale(canvas.width / scale.delta(), -1)

@@ -30,7 +30,7 @@ class DraggableBox {
         document.onmousemove = null;
     }
     elementDrag(ev: MouseEvent) {
-        ev.preventDefault();
+        // ev.preventDefault();
         // calculate the new cursor position:
         this.pos.x = this.pos.a - ev.clientX;
         this.pos.y = this.pos.b - ev.clientY;

@@ -27,6 +27,24 @@
             </div>
             <div id="range-input-container" style="overflow-y: scroll;"></div>
         </div>
+        <div id="tickmark-generator-box" style="position: absolute; top: 400px; left: 100px; border: 1px solid; padding: 10px; display: flex; flex-direction: column; justify-content: start; background-color: rgba(3,5,15,0.62); user-select: none; max-width: 20%;">
+            <h3>Tick Mark Generator</h3>
+            <div id="min-max-tickmark" style="position: absolute; top: 0px; right: 10px"><span style="font-size: 2em;">-</span></div>
+            <select id="mode-selector">
+                <option value="amount" selected>Number of Tickmarks Mode</option>
+                <option value="interval">Interval Mode</option>
+            </select>
+            <div id="generate-interval" hidden>
+                <input id="tickmark-startdelta" type="number" placeholder="start gap">
+                <input id="tickmark-interval" type="number" placeholder="interval">
+            </div>
+            <div id="generate-amount">
+                <input id="tickmark-amount" type="number" placeholder="amount">
+            </div>
+            <div style="overflow-y: hidden; overflow-x: scroll; width: 90%; white-space: nowrap;">
+                <p id="tickmark-generator-output"></p>
+            </div>
+        </div>
         <canvas style="width: 100%; height: 100%;"></canvas>
         <script type="module" src="/src/main.ts"></script>
     </body>
