@@ -4,9 +4,9 @@ import { resizeTarget, Scale } from "./classes"
 
 const modeSelector: HTMLSelectElement | null = document.querySelector("#mode-selector")
 
-const startDeltaInput: HTMLInputElement | null = document.querySelector("#tickmark-startdelta")
-const intervalInput: HTMLInputElement | null = document.querySelector("#tickmark-interval")
-const amountInput: HTMLInputElement | null = document.querySelector("#tickmark-amount")
+const startDeltaInput: HTMLInputElement = document.querySelector("#tickmark-startdelta") as HTMLInputElement
+const intervalInput: HTMLInputElement = document.querySelector("#tickmark-interval") as HTMLInputElement
+const amountInput: HTMLInputElement = document.querySelector("#tickmark-amount") as HTMLInputElement
 
 const amountOptionsDiv: HTMLDivElement = document.querySelector("#generate-amount") as HTMLDivElement
 const intervalOptionsDiv: HTMLDivElement = document.querySelector("#generate-interval") as HTMLDivElement
@@ -33,9 +33,14 @@ class TickMarkGeneratorBox {
             }
             this.updateTickMarks.bind(this)
         }).bind(this))
-        startDeltaInput?.addEventListener("change", this.updateTickMarks.bind(this))
-        intervalInput?.addEventListener("change", this.updateTickMarks.bind(this))
-        amountInput?.addEventListener("change", this.updateTickMarks.bind(this))
+        startDeltaInput.addEventListener("change", this.updateTickMarks.bind(this))
+        intervalInput.addEventListener("change", this.updateTickMarks.bind(this))
+        amountInput.addEventListener("change", this.updateTickMarks.bind(this))
+
+        startDeltaInput.value = "0"
+        intervalInput.value = "0.1"
+
+        amountInput.value = "11"
 
         resizeTarget.addEventListener("update", this.updateTickMarks.bind(this))
 
