@@ -39,8 +39,11 @@ class TickMarkGeneratorBox {
 
         startDeltaInput.value = "0"
         intervalInput.value = "0.1"
+        intervalInput.min = Number.EPSILON.toString()
 
         amountInput.value = "11"
+        amountInput.step = "1"
+        amountInput.min = "2"
 
         resizeTarget.addEventListener("update", this.updateTickMarks.bind(this))
 
