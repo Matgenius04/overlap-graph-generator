@@ -157,7 +157,7 @@ class Scale extends Range {
     this.tickMarkerInput.setAttribute("type", "text")
 
     // initialize with some tick marks
-    console.log('problem area')
+    // console.log('problem area')
     this.tickMarkerInput.value = this.generateTickMarkers("amount", 11).toString();
     this.tickMarkers = this.generateTickMarkers("amount", 11);
 
